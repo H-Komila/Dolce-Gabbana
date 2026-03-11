@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // 1. Link va useNavigate qo'shildi
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from './images/logo.png';
 import { IoSearchSharp, IoMenuOutline, IoCloseOutline, IoLocationOutline } from "react-icons/io5";
 import { FaHeart, FaUserCircle, FaQuestionCircle, FaUserPlus } from "react-icons/fa";
@@ -7,17 +7,16 @@ import { FaBagShopping } from "react-icons/fa6";
 
 const Nav = () => {
     const [isOpen, setIsOpen] = useState(false);
-    const [activeModal, setActiveModal] = useState(null); // 'signin', 'help', 'join', 'store'
+    const [activeModal, setActiveModal] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    const navigate = useNavigate(); // 2. Mobil navigatsiya uchun hook
+    // showMobileSearch holati endi kerak emas, chunki u doim ko'rinib turadi
+    const navigate = useNavigate();
 
-    // Test mahsulotlar
     const products = ["Nike Air Max", "Jordan Retro", "Nike Pegasus", "Women's Training Shoes", "Men's Running Shorts"];
     const filteredProducts = products.filter(item =>
         item.toLowerCase().includes(searchTerm.toLowerCase()) && searchTerm !== ""
     );
 
-    // Form handling
     const handleAuthSubmit = (e, type) => {
         e.preventDefault();
         const message = type === 'signin'
@@ -49,35 +48,44 @@ const Nav = () => {
                 </div>
 
                 {/* 2. MAIN NAV */}
-                <div className="px-6 md:px-12 py-4 flex justify-between items-center bg-white">
-                    <div className="flex-shrink-0 relative group">
-                        {/* 3. Link to="/" o'rnatildi, barcha stillar saqlandi */}
-                        <Link
-                            to="/"
-                            className="block transition-all duration-500 ease-in-out transform hover:scale-105 active:scale-95 outline-none"
-                        >
-                            <div className="absolute inset-0 bg-black/5 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
+                <div className="px-6 md:px-12 py-4 flex flex-col md:flex-row justify-between items-center bg-white relative gap-4 md:gap-0">
 
-                            <img
-                                src={Logo}
-                                alt="Nike Logo"
-                                className="relative w-30 md:w-[100px] lg:w-[120px] h-auto object-contain drop-shadow-sm filter brightness-100 contrast-105"
-                            />
-                        </Link>
+                    {/* LOGO VA MOBIL ICONS */}
+                    <div className="flex justify-between items-center w-full md:w-auto">
+                        <div className="flex-shrink-0 relative group">
+                            <Link to="/" className="block transition-all duration-500 ease-in-out transform hover:scale-105 active:scale-95 outline-none">
+                                <div className="absolute inset-0 bg-black/5 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
+                                <img src={Logo} alt="Nike Logo" className="relative w-16 md:w-[80px] lg:w-[100px] h-auto object-contain" />
+                            </Link>
+                        </div>
+
+                        {/* Mobil menyu va savatcha (faqat kichik ekranda) */}
+                        <div className="flex md:hidden items-center gap-4 text-2xl">
+                            <Link to="/cart"><FaHeart className="text-xl" /></Link>
+                            <Link to="/product" className="relative">
+                                <FaBagShopping className="text-xl" />
+                                <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                            </Link>
+                            <button onClick={() => setIsOpen(!isOpen)}>
+                                {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
+                            </button>
+                        </div>
                     </div>
 
+                    {/* DESKTOP MENU */}
                     <ul className="hidden md:flex items-center gap-8 font-semibold text-gray-800">
                         {['New & Featured', 'Men', 'Women', 'Sale'].map((item) => (
                             <li key={item} className="relative group cursor-pointer hover:text-black">
-                                {/* 4. Har bir elementga Link to="/catalog" qo'shildi */}
                                 <Link to="/catalog">{item}</Link>
                                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
                             </li>
                         ))}
                     </ul>
 
-                    <div className="flex items-center gap-4 md:gap-6">
-                        <div className="relative hidden lg:block group">
+                    {/* SEARCH VA DESKTOP ICONS */}
+                    <div className="flex items-center w-full md:w-auto gap-4">
+                        {/* SEARCH INPUT - Endi mobil va desktopda doim ko'rinadi */}
+                        <div className="relative flex-1 md:flex-none">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <IoSearchSharp className="text-xl text-gray-500" />
                             </div>
@@ -85,11 +93,13 @@ const Nav = () => {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 value={searchTerm}
                                 type="text"
-                                placeholder="Search products..."
-                                className="bg-[#f5f5f5] rounded-full py-2 pl-10 pr-4 outline-none focus:bg-[#e5e5e5] transition-all w-44 focus:w-64"
+                                placeholder="Search..."
+                                className="bg-[#f5f5f5] rounded-full py-2 pl-10 pr-4 outline-none focus:bg-[#e5e5e5] transition-all w-full md:w-44 lg:w-64"
                             />
+
+                            {/* Search Results Dropdown */}
                             {searchTerm && (
-                                <div className="absolute top-full right-0 w-64 bg-white shadow-2xl mt-2 rounded-lg p-4 z-[60] border animate-in fade-in slide-in-from-top-2">
+                                <div className="absolute top-full left-0 md:right-0 w-full md:w-64 bg-white shadow-2xl mt-2 rounded-lg p-4 z-[60] border animate-in fade-in slide-in-from-top-2">
                                     <p className="text-xs text-gray-400 mb-2 italic text-center">"{searchTerm}" bo'yicha natijalar</p>
                                     {filteredProducts.length > 0 ? (
                                         filteredProducts.map(p => (
@@ -102,25 +112,20 @@ const Nav = () => {
                             )}
                         </div>
 
-                        <div className="flex gap-4 text-2xl items-center">
-                            <Link to="/product" className="relative cursor-pointer">
-                                <FaHeart className="cursor-pointer hover:text-red-500 transition-colors" />
+                        {/* DESKTOP ICONS (Faqat md dan yuqori ekranlarda) */}
+                        <div className="hidden md:flex items-center gap-4 text-2xl">
+                            <Link to="/cart" className="relative p-1">
+                                <FaHeart className="hover:text-red-500 transition-colors" />
                             </Link>
-                            {/* 5. Savatcha uchun Link to="/cart" */}
-                            <Link to="/cart" className="relative cursor-pointer">
+                            <Link to="/product" className="relative p-1">
                                 <FaBagShopping />
-                                <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                                <span className="absolute top-0 right-0 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">0</span>
                             </Link>
-                            <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
-                                {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
-                            </button>
                         </div>
                     </div>
                 </div>
 
-                {/* --- MODALLAR (Siz yozgan barcha kodlar o'zgarishsiz qoldi) --- */}
-
-                {/* 1. SIGN IN MODAL */}
+                {/* --- MODALS --- */}
                 {activeModal === 'signin' && (
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                         <div className="bg-white w-full max-w-md rounded-2xl p-8 shadow-2xl relative animate-in zoom-in duration-200">
@@ -136,14 +141,13 @@ const Nav = () => {
                     </div>
                 )}
 
-                {/* 2. JOIN US MODAL */}
                 {activeModal === 'join' && (
                     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                         <div className="bg-white w-full max-w-md rounded-2xl p-8 shadow-2xl relative animate-in zoom-in duration-200 text-center">
                             <button onClick={() => setActiveModal(null)} className="absolute top-4 right-4 text-2xl"><IoCloseOutline /></button>
                             <FaUserPlus className="text-5xl mx-auto mb-4 text-gray-700" />
                             <h2 className="text-xl font-black mb-4">BECOME A NIKE MEMBER</h2>
-                            <p className="text-gray-500 text-sm mb-6">Create your Nike Member profile and get first access to the very best of Nike products, inspiration and community.</p>
+                            <p className="text-gray-500 text-sm mb-6">Create your Nike Member profile and get first access.</p>
                             <form onSubmit={(e) => handleAuthSubmit(e, 'join')} className="space-y-3">
                                 <input required type="text" placeholder="First Name" className="w-full border p-3 rounded-md outline-black" />
                                 <input required type="email" placeholder="Email Address" className="w-full border p-3 rounded-md outline-black" />
@@ -154,42 +158,35 @@ const Nav = () => {
                     </div>
                 )}
 
-                {/* 3. FIND STORE MODAL */}
                 {activeModal === 'store' && (
                     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                         <div className="bg-white w-full max-w-sm rounded-2xl p-8 text-center animate-in fade-in duration-300">
                             <IoLocationOutline className="text-6xl mx-auto mb-4 text-red-500 animate-bounce" />
                             <h2 className="text-2xl font-bold mb-2">Find a Nike Store</h2>
-                            <p className="text-gray-500 mb-6">Yaqin atrofdagi do'konlarni topish uchun joylashuvingizni aniqlashga ruxsat bering.</p>
-                            <div className="flex flex-col gap-2">
-                                <button onClick={handleFindStore} className="bg-black text-white py-3 rounded-full font-bold">Ruxsat berish</button>
-                                <button onClick={() => setActiveModal(null)} className="text-gray-500 py-2">Keyinroq</button>
-                            </div>
+                            <button onClick={handleFindStore} className="w-full bg-black text-white py-3 rounded-full font-bold mt-4">Ruxsat berish</button>
+                            <button onClick={() => setActiveModal(null)} className="text-gray-500 py-2 mt-2">Keyinroq</button>
                         </div>
                     </div>
                 )}
 
-                {/* 4. HELP MODAL */}
                 {activeModal === 'help' && (
                     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                         <div className="bg-white w-full max-w-sm rounded-2xl p-8 relative">
                             <button onClick={() => setActiveModal(null)} className="absolute top-4 right-4 text-2xl"><IoCloseOutline /></button>
-                            <FaQuestionCircle className="text-5xl text-blue-500 mx-auto mb-4" />
-                            <h3 className="text-xl font-bold mb-4 text-center">Sizga qanday yordam bera olamiz?</h3>
+                            <h3 className="text-xl font-bold mb-4 text-center">Yordam</h3>
                             <ul className="space-y-2">
-                                {['Buyurtma holati', 'Yetkazib berish', 'Qaytarish', 'To\'lov usullari'].map(item => (
-                                    <li key={item} onClick={() => { alert(item + " bo'limiga o'tilmoqda..."); setActiveModal(null) }} className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors border">{item}</li>
+                                {['Buyurtma holati', 'Yetkazib berish', 'Qaytarish'].map(item => (
+                                    <li key={item} onClick={() => setActiveModal(null)} className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer border">{item}</li>
                                 ))}
                             </ul>
                         </div>
                     </div>
                 )}
 
-                {/* MOBILE MENU */}
+                {/* MOBILE SIDEBAR MENU */}
                 <div className={`fixed top-0 right-0 h-full w-full bg-white z-[90] transition-transform duration-500 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden p-8`}>
                     <button onClick={() => setIsOpen(false)} className="absolute top-6 right-6 text-3xl"><IoCloseOutline /></button>
                     <ul className="mt-12 space-y-6 text-2xl font-bold">
-                        {/* 6. Mobil menyu navigatsiyasi va menyuni yopish */}
                         <li onClick={() => { navigate('/catalog'); setIsOpen(false); }}>New & Featured</li>
                         <li onClick={() => { navigate('/catalog'); setIsOpen(false); }}>Men</li>
                         <li onClick={() => { navigate('/catalog'); setIsOpen(false); }}>Women</li>

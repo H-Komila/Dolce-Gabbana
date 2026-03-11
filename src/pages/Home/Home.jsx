@@ -1,8 +1,17 @@
 import React from 'react'
 
+import Trending from './Trending/Trending.jsx'
+import Prefooter1 from '../../components/Prefooter/Prefooter1'
+
+
 const Home = () => {
   return (
-    <div>Home</div>
+    <>
+
+    <Trending />
+    <Prefooter1 />
+
+    </>
   )
 }
 
