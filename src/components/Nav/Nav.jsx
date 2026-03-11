@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // 1. Link va useNavigate qo'shildi
 import Logo from './images/logo.png';
 import { IoSearchSharp, IoMenuOutline, IoCloseOutline, IoLocationOutline } from "react-icons/io5";
 import { FaHeart, FaUserCircle, FaQuestionCircle, FaUserPlus } from "react-icons/fa";
@@ -8,6 +9,7 @@ const Nav = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeModal, setActiveModal] = useState(null); // 'signin', 'help', 'join', 'store'
     const [searchTerm, setSearchTerm] = useState("");
+    const navigate = useNavigate(); // 2. Mobil navigatsiya uchun hook
 
     // Test mahsulotlar
     const products = ["Nike Air Max", "Jordan Retro", "Nike Pegasus", "Women's Training Shoes", "Men's Running Shorts"];
@@ -15,14 +17,14 @@ const Nav = () => {
         item.toLowerCase().includes(searchTerm.toLowerCase()) && searchTerm !== ""
     );
 
-    // Form handling (Oddiy misol)
+    // Form handling
     const handleAuthSubmit = (e, type) => {
         e.preventDefault();
         const message = type === 'signin'
             ? "Tizimga muvaffaqiyatli kirdingiz! ✅"
             : "Ro'yxatdan o'tganingiz uchun tashakkur! Xush kelibsiz! 🎉";
         alert(message);
-        setActiveModal(null); // Modalni yopish
+        setActiveModal(null);
     };
 
     const handleFindStore = () => {
@@ -49,26 +51,26 @@ const Nav = () => {
                 {/* 2. MAIN NAV */}
                 <div className="px-6 md:px-12 py-4 flex justify-between items-center bg-white">
                     <div className="flex-shrink-0 relative group">
-                        <a
-                            href="/"
+                        {/* 3. Link to="/" o'rnatildi, barcha stillar saqlandi */}
+                        <Link
+                            to="/"
                             className="block transition-all duration-500 ease-in-out transform hover:scale-105 active:scale-95 outline-none"
                         >
-                            {/* Logoning orqasidagi mayin nur (Glow effect) - Hover bo'lganda ko'rinadi */}
                             <div className="absolute inset-0 bg-black/5 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
 
                             <img
                                 src={Logo}
                                 alt="Nike Logo"
                                 className="relative w-30 md:w-[100px] lg:w-[120px] h-auto object-contain drop-shadow-sm filter brightness-100 contrast-105"
-                            // brightness va contrast logoni tiniqlashtiradi
                             />
-                        </a>
+                        </Link>
                     </div>
 
                     <ul className="hidden md:flex items-center gap-8 font-semibold text-gray-800">
                         {['New & Featured', 'Men', 'Women', 'Sale'].map((item) => (
                             <li key={item} className="relative group cursor-pointer hover:text-black">
-                                {item}
+                                {/* 4. Har bir elementga Link to="/catalog" qo'shildi */}
+                                <Link to="/catalog">{item}</Link>
                                 <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
                             </li>
                         ))}
@@ -101,11 +103,14 @@ const Nav = () => {
                         </div>
 
                         <div className="flex gap-4 text-2xl items-center">
-                            <FaHeart className="cursor-pointer hover:text-red-500 transition-colors" />
-                            <div className="relative cursor-pointer">
+                            <Link to="/product" className="relative cursor-pointer">
+                                <FaHeart className="cursor-pointer hover:text-red-500 transition-colors" />
+                            </Link>
+                            {/* 5. Savatcha uchun Link to="/cart" */}
+                            <Link to="/cart" className="relative cursor-pointer">
                                 <FaBagShopping />
                                 <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">0</span>
-                            </div>
+                            </Link>
                             <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
                                 {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
                             </button>
@@ -113,7 +118,7 @@ const Nav = () => {
                     </div>
                 </div>
 
-                {/* --- MODALLAR --- */}
+                {/* --- MODALLAR (Siz yozgan barcha kodlar o'zgarishsiz qoldi) --- */}
 
                 {/* 1. SIGN IN MODAL */}
                 {activeModal === 'signin' && (
@@ -164,7 +169,7 @@ const Nav = () => {
                     </div>
                 )}
 
-                {/* 4. HELP MODAL (Avvalgidek qoldi) */}
+                {/* 4. HELP MODAL */}
                 {activeModal === 'help' && (
                     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                         <div className="bg-white w-full max-w-sm rounded-2xl p-8 relative">
@@ -184,10 +189,11 @@ const Nav = () => {
                 <div className={`fixed top-0 right-0 h-full w-full bg-white z-[90] transition-transform duration-500 transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} md:hidden p-8`}>
                     <button onClick={() => setIsOpen(false)} className="absolute top-6 right-6 text-3xl"><IoCloseOutline /></button>
                     <ul className="mt-12 space-y-6 text-2xl font-bold">
-                        <li onClick={() => setIsOpen(false)}>New & Featured</li>
-                        <li onClick={() => setIsOpen(false)}>Men</li>
-                        <li onClick={() => setIsOpen(false)}>Women</li>
-                        <li className="text-red-600">Sale</li>
+                        {/* 6. Mobil menyu navigatsiyasi va menyuni yopish */}
+                        <li onClick={() => { navigate('/catalog'); setIsOpen(false); }}>New & Featured</li>
+                        <li onClick={() => { navigate('/catalog'); setIsOpen(false); }}>Men</li>
+                        <li onClick={() => { navigate('/catalog'); setIsOpen(false); }}>Women</li>
+                        <li onClick={() => { navigate('/catalog'); setIsOpen(false); }} className="text-red-600">Sale</li>
                     </ul>
                     <div className="mt-12 pt-12 border-t space-y-4">
                         <button onClick={() => { setActiveModal('signin'); setIsOpen(false) }} className="block text-lg font-medium">Sign In</button>

@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'
-import Nav from './components/Nav/Nav';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+
+// Komponentlar
 import LoadingScreen from './components/LoadingScreen';
+
+// Sahifalar
+import Home from './pages/Home/Home';
+import Catalog from './pages/Catalog/Catalog';
+import ProductDetail from './pages/ProductDetail/ProductDetail';
+import Cart from './pages/Cart/Cart';
+import Layout from './components/Layout/Layout';
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Sayt resurslari yuklanishini simulyatsiya qilamiz
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); // 3.5 soniyadan keyin sayt ochiladi
-
+    }, 2000); 
     return () => clearTimeout(timer);
   }, []);
 
@@ -20,10 +27,17 @@ function App() {
   }
 
   return (
-    <div className="animate-in fade-in duration-1000">
-      <Nav />
-      
-    </div>
+    <Router>
+      <Routes>
+        {/* Hamma sahifalar Layout ichiga olinadi */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} /> {/* "/" yo'li uchun Home */}
+          <Route path="catalog" element={<Catalog />} />
+          <Route path="product" element={<ProductDetail />} />
+          <Route path="cart" element={<Cart />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
