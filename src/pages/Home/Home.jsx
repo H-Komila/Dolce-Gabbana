@@ -1,8 +1,11 @@
 import React from 'react'
+import Prefooter1 from './Prefooter1'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <>
+    <Prefooter1 />
+    </>
   )
 }
 
