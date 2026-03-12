@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 
 // Rasmlar importi
-import shoes1 from "./images/Shoes1.png";
-import shoes2 from "./images/Shoes2.png";
-import shoes3 from "./images/Shoes3.png";
-import shoes4 from "./images/Shoes4.png";
-import shoes5 from "./images/Shoes5.png";
-import shoes6 from "./images/Shoes6.png";
-import shoes7 from "./images/Shoes7.png";
+import Shoes1 from "./images/shoes1.png";
+import Shoes2 from "./images/shoes2.png";
+import Shoes3 from "./images/shoes3.png";
+import Shoes4 from "./images/shoes4.png";
+import Shoes5 from "./images/shoes5.png";
+import Shoes6 from "./images/shoes6.png";
+import Shoes7 from "./images/shoes7.png";
 
-import rasm1 from "./images/Balotviy nike 1.png";
-import rasm2 from "./images/Kulrang nike 2.png";
-import rasm3 from "./images/Oq bolka 3.png";
-import rasm4 from "./images/Yashil bolka 4.png";
+import Rasm1 from "./images/Balotviy nike 1.png";
+import Rasm2 from "./images/Kulrang nike 2.png";
+import Rasm3 from "./images/Oq bolka 3.png";
+import Rasm4 from "./images/Yashil bolka 4.png";
 
 const ProductDetail = () => {
     // Statelar
@@ -33,7 +33,7 @@ const ProductDetail = () => {
         { id: 3, user: "Nathan Dever", rating: 2, comment: "Lorem ipsum dolor sit amet consectetur..." },
     ]);
 
-    const images = [shoes1, shoes2, shoes3, shoes4, shoes5, shoes6, shoes7];
+    const images = [Shoes1, Shoes2, Shoes3, Shoes4, Shoes5, Shoes6, Shoes7];
     const sizes = [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5];
 
     // Savatga qo'shish funksiyasi
@@ -77,10 +77,10 @@ const ProductDetail = () => {
 
     // Pastdagi tavsiya etiladigan mahsulotlar
     const data = [
-        { img: rasm1, title: "Nike Tech Fleece Windrunner", label: "Just In", price: "$145" },
-        { img: rasm2, title: "Nike Tech Fleece Windrunner", label: "Sustainable Materials", price: "$145", promo: "Extra 20% Off SPRING" },
-        { img: rasm3, title: "Nike Dri-FIT Tee", label: "Just In", price: "$145" },
-        { img: rasm4, title: "Nike Sportswear Tee", label: "Just In", price: "$145" },
+        { img: Rasm1, title: "Nike Tech Fleece Windrunner", label: "Just In", price: "$145" },
+        { img: Rasm2, title: "Nike Tech Fleece Windrunner", label: "Sustainable Materials", price: "$145", promo: "Extra 20% Off SPRING" },
+        { img: Rasm3, title: "Nike Dri-FIT Tee", label: "Just In", price: "$145" },
+        { img: Rasm4, title: "Nike Sportswear Tee", label: "Just In", price: "$145" },
     ];
 
     return (
@@ -240,7 +240,7 @@ const ProductDetail = () => {
                 </section>
             </div>
 
-            {/* YOU MIGHT ALSO LIKE - To'liq holatda */}
+            
             <section className="mt-20">
                 <h2 className="text-2xl font-bold mb-8">You Might Also Like</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
