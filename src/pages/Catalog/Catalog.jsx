@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom';
 import { HiChevronDown, HiOutlineHeart, HiOutlineShoppingBag } from "react-icons/hi";
 import useStore from '../../Store/useStore'; 
 
@@ -75,6 +76,8 @@ export const ProductCard = ({ product }) => {
 
 const Catalog = () => {
     const { t } = useI18n();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchQuery = (searchParams.get("search") || "").trim();
     const categoryList = Array.isArray(t("catalog.categoryList")) ? t("catalog.categoryList") : [];
     const [openMenus, setOpenMenus] = useState({ 
         sale: true, 
@@ -88,6 +91,12 @@ const Catalog = () => {
     const toggle = (name) => {
         setOpenMenus(prev => ({ ...prev, [name]: !prev[name] }));
     };
+
+    const visibleProducts = useMemo(() => {
+        if (!searchQuery) return productsData;
+        const q = searchQuery.toLowerCase();
+        return productsData.filter((p) => p.title.toLowerCase().includes(q));
+    }, [searchQuery]);
 
     return (
         <div className="bg-white min-h-screen">
@@ -207,13 +216,30 @@ const Catalog = () => {
                 </div>
 
                 {/* MAHSULOTLAR GRIDI */}
-                <div className='w-full md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10'>
-                    {productsData.map(product => (
+                <div className='w-full md:w-3/4'>
+                    {searchQuery && (
+                        <div className="flex items-center justify-between gap-4 mb-6">
+                            <p className="text-gray-600 font-medium">
+                                {t("nav.search.resultsFor", { term: searchQuery, count: visibleProducts.length })}
+                            </p>
+                            <button
+                                type="button"
+                                onClick={() => setSearchParams({})}
+                                className="text-sm font-bold underline underline-offset-4 hover:text-gray-600"
+                            >
+                                {t("nav.search.cancel")}
+                            </button>
+                        </div>
+                    )}
+
+                    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10'>
+                    {visibleProducts.map(product => (
                         <ProductCard 
                             key={product.id}
                             product={product}
                         />
                     ))}
+                    </div>
                 </div>
             </div>
         </div>
