@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Slider from "react-slick";
 import { FaHeart, FaShoppingCart } from "react-icons/fa";
+import { useI18n } from "../../i18n/I18nProvider";
 
 import img1 from "./imgg/img1.png";
 import img2 from "./imgg/img2.webp";
@@ -10,6 +11,7 @@ import img4 from "./imgg/img4.png";
 function SimpleSlider() {
   const [favorites, setFavorites] = useState([]);
   const [cart, setCart] = useState([]);
+  const { t } = useI18n();
 
   const settings = {
     dots: true,
@@ -22,30 +24,10 @@ function SimpleSlider() {
   };
 
   const slides = [
-    {
-      id: 1,
-      img: img1,
-      title: "Denim Collection",
-      text: "An enigmatic and contemporary collection that exalts nautical style."
-    },
-    {
-      id: 2,
-      img: img2,
-      title: "New Season Collection",
-      text: "Step into the new season with timeless elegance."
-    },
-    {
-      id: 3,
-      img: img3,
-      title: "Exclusive Offers",
-      text: "Enjoy special seasonal discounts on selected pieces."
-    },
-    {
-      id: 4,
-      img: img4,
-      title: "Signature Luxury",
-      text: "Experience refined craftsmanship and iconic Italian style."
-    }
+    { id: 1, img: img1, titleKey: "hero.slides.denim.title", textKey: "hero.slides.denim.text" },
+    { id: 2, img: img2, titleKey: "hero.slides.newSeason.title", textKey: "hero.slides.newSeason.text" },
+    { id: 3, img: img3, titleKey: "hero.slides.offers.title", textKey: "hero.slides.offers.text" },
+    { id: 4, img: img4, titleKey: "hero.slides.luxury.title", textKey: "hero.slides.luxury.text" },
   ];
 
   const toggleFavorite = (slide) => {
@@ -95,24 +77,20 @@ function SimpleSlider() {
               <div className="absolute inset-0 flex items-center">
                 <div className="max-w-[600px] pl-10 text-white">
 
-                  <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                    {slide.title}
-                  </h1>
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4">{t(slide.titleKey)}</h1>
 
-                  <p className="text-lg mb-6 opacity-90">
-                    {slide.text}
-                  </p>
+                  <p className="text-lg mb-6 opacity-90">{t(slide.textKey)}</p>
 
                   <div className="flex gap-4">
                     <button className="px-6 py-3 bg-white text-black font-semibold hover:bg-gray-200 transition">
-                      View Collection
+                      {t("common.viewCollection")}
                     </button>
 
                     <button
                       onClick={() => addToCart(slide)}
                       className="px-6 py-3 border border-white hover:bg-white hover:text-black transition"
                     >
-                      Buy Now
+                      {t("common.buyNow")}
                     </button>
                   </div>
 

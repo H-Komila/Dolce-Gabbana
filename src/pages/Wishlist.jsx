@@ -3,10 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import useStore from "../Store/useStore";
 import { AiFillHeart, AiOutlineShoppingCart, AiOutlineArrowLeft } from "react-icons/ai";
 import { IoMdClose } from "react-icons/io";
+import { useI18n } from "../i18n/I18nProvider";
 
 const Wishlist = () => {
     const { wishlist, toggleWishlist, addToCart } = useStore();
     const navigate = useNavigate();
+    const { t } = useI18n();
 
     if (wishlist.length === 0) {
         return (
@@ -15,16 +17,16 @@ const Wishlist = () => {
                     <AiFillHeart size={40} className="text-gray-300" />
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                    Your wishlist is empty
+                    {t("wishlist.emptyTitle")}
                 </h2>
                 <p className="text-gray-500 max-w-md mb-8">
-                    Items you like will be saved here. Finding and purchasing them will be easier!
+                    {t("wishlist.emptyDesc")}
                 </p>
                 <Link 
                     to="/catalog" 
                     className="bg-black text-white px-10 py-4 rounded-full font-medium hover:bg-gray-800 transition-all active:scale-95"
                 >
-                    Start Shopping
+                    {t("wishlist.startShopping")}
                 </Link>
             </div>
         );
@@ -39,16 +41,16 @@ const Wishlist = () => {
                         onClick={() => navigate(-1)} 
                         className="flex items-center text-sm font-medium text-gray-500 hover:text-black transition-colors mb-2"
                     >
-                        <AiOutlineArrowLeft className="mr-2" /> Back
+                        <AiOutlineArrowLeft className="mr-2" /> {t("wishlist.back")}
                     </button>
 
                     <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
-                        Wishlist <span className="text-gray-400 font-light">({wishlist.length})</span>
+                        {t("wishlist.title")} <span className="text-gray-400 font-light">({wishlist.length})</span>
                     </h1>
                 </div>
 
                 <p className="text-sm text-gray-500 italic">
-                    Items will stay here until you purchase them.
+                    {t("wishlist.note")}
                 </p>
             </div>
 
@@ -66,7 +68,7 @@ const Wishlist = () => {
                             <button 
                                 onClick={() => toggleWishlist(item)} 
                                 className="absolute top-4 right-4 bg-white/80 backdrop-blur-md p-2 rounded-full shadow-sm hover:bg-red-50 hover:text-red-600 transition-all duration-300 z-10"
-                                title="Remove"
+                                title={t("wishlist.remove")}
                             >
                                 <IoMdClose size={22} />
                             </button>
@@ -91,7 +93,7 @@ const Wishlist = () => {
                                     className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white py-3.5 rounded-lg font-bold hover:bg-black transition-all active:scale-[0.98] shadow-lg shadow-gray-200"
                                 >
                                     <AiOutlineShoppingCart size={20} />
-                                    <span>Add to cart</span>
+                                    <span>{t("wishlist.addToCart")}</span>
                                 </button>
                             </div>
                         </div>
@@ -103,18 +105,18 @@ const Wishlist = () => {
 
             <div className="mt-32 p-12 bg-gray-50 rounded-3xl text-center">
                 <h3 className="text-xl font-bold mb-2">
-                    You might also like
+                    {t("wishlist.youMightAlsoLike")}
                 </h3>
 
                 <p className="text-gray-500 mb-6">
-                    Products selected based on your interests.
+                    {t("wishlist.basedOnInterests")}
                 </p>
 
                 <button 
                     onClick={() => navigate('/catalog')}
                     className="text-sm font-bold underline underline-offset-4 hover:text-gray-600"
                 >
-                    Go to catalog
+                    {t("wishlist.goToCatalog")}
                 </button>
             </div>
         </div>

@@ -2,23 +2,16 @@ import React, { useState } from 'react'
 import { HiChevronDown, HiOutlineHeart, HiOutlineShoppingBag } from "react-icons/hi";
 import useStore from '../../Store/useStore'; 
 
-import Rasm from "./images/aka.png"
 import G from './images/g.png'
 import O from './images/o.png'
 import W from './images/w.png'
-
-export const productsData = [
-    { id: 1, title: "Nike Air Max", price: "$145", category: "Men's Shoes", img: Rasm },
-    { id: 2, title: "Jordan Retro", price: "$190", category: "Men's Basketball", img: G },
-    { id: 3, title: "Nike Pegasus", price: "$130", category: "Running Shoes", img: O },
-    { id: 4, title: "Nike Air Force", price: "$110", category: "Unisex Shoes", img: W },
-    { id: 5, title: "Nike Dunk Low", price: "$115", category: "Women's Shoes", img: Rasm },
-    { id: 6, title: "Nike ZoomX", price: "$160", category: "Pro Running", img: G },
-];
+import { productsData } from '../../data/products';
+import { useI18n } from '../../i18n/I18nProvider';
 
 export const ProductCard = ({ product }) => {
     const { addToCart, toggleWishlist, wishlist } = useStore(); 
     const [currentImg, setCurrentImg] = useState(product.img);
+    const { t } = useI18n();
     
     const isLiked = wishlist.some(item => item.id === product.id);
 
@@ -73,7 +66,7 @@ export const ProductCard = ({ product }) => {
                     onClick={() => addToCart(product)}
                     className="w-full mt-4 bg-black text-white py-3 rounded-full font-bold text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300 active:scale-95"
                 >
-                    ADD TO BAG
+                    {t("catalog.addToBag")}
                 </button>
             </div>
         </div>
@@ -81,6 +74,8 @@ export const ProductCard = ({ product }) => {
 };
 
 const Catalog = () => {
+    const { t } = useI18n();
+    const categoryList = Array.isArray(t("catalog.categoryList")) ? t("catalog.categoryList") : [];
     const [openMenus, setOpenMenus] = useState({ 
         sale: true, 
         color: true, 
@@ -102,9 +97,9 @@ const Catalog = () => {
                     <div className='sticky top-5'>
                         <ul className='space-y-7'>
                             <li>
-                                <h1 className='font-bold text-2xl mb-6 text-gray-900'>New Releases ({productsData.length})</h1>
+                                <h1 className='font-bold text-2xl mb-6 text-gray-900'>{t("catalog.newReleases")} ({productsData.length})</h1>
                                 <div className='space-y-3 text-[16px] text-gray-700 font-medium'>
-                                    {["Tops & T-Shirts", "Shorts", "Hoodies & Pullovers", "Jackets & Vests", "Pants & Tights", "Fleece", "Tracksuits", "Socks"].map(item => (
+                                    {categoryList.map(item => (
                                         <p key={item} className='hover:translate-x-1 transition-transform cursor-pointer hover:text-black'>{item}</p>
                                     ))}
                                 </div>
@@ -114,13 +109,13 @@ const Catalog = () => {
 
                             <li>
                                 <div className='flex justify-between items-center cursor-pointer group' onClick={() => toggle('sale')}>
-                                    <h1 className='font-bold text-lg'>Sale & Offers</h1>
+                                    <h1 className='font-bold text-lg'>{t("catalog.saleOffers")}</h1>
                                     <HiChevronDown className={`text-2xl transition-transform duration-300 ${openMenus.sale ? 'rotate-180' : ''}`} />
                                 </div>
                                 <div className={`overflow-hidden transition-all duration-300 ${openMenus.sale ? 'max-h-40 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className='space-y-3'>
-                                        <div className='flex items-center gap-3'><input type="checkbox" className='w-5 h-5 accent-black cursor-pointer' id="s1" /><label htmlFor="s1" className='text-gray-700 cursor-pointer'>Up to 50% Off</label></div>
-                                        <div className='flex items-center gap-3'><input type="checkbox" className='w-5 h-5 accent-black cursor-pointer' id="s2" /><label htmlFor="s2" className='text-gray-700 cursor-pointer'>Sale</label></div>
+                                        <div className='flex items-center gap-3'><input type="checkbox" className='w-5 h-5 accent-black cursor-pointer' id="s1" /><label htmlFor="s1" className='text-gray-700 cursor-pointer'>{t("catalog.upTo50")}</label></div>
+                                        <div className='flex items-center gap-3'><input type="checkbox" className='w-5 h-5 accent-black cursor-pointer' id="s2" /><label htmlFor="s2" className='text-gray-700 cursor-pointer'>{t("catalog.sale")}</label></div>
                                     </div>
                                 </div>
                             </li>
@@ -129,7 +124,7 @@ const Catalog = () => {
 
                             <li>
                                 <div className='flex justify-between items-center cursor-pointer group' onClick={() => toggle('color')}>
-                                    <h1 className='font-bold text-lg tracking-tight'>Color</h1>
+                                    <h1 className='font-bold text-lg tracking-tight'>{t("catalog.color")}</h1>
                                     <HiChevronDown className={`text-2xl transition-transform duration-300 ${openMenus.color ? 'rotate-180' : ''}`} />
                                 </div>
                                 <div className={`overflow-hidden transition-all duration-300 ${openMenus.color ? 'max-h-64 mt-6 opacity-100' : 'max-h-0 opacity-0'}`}>
@@ -164,7 +159,7 @@ const Catalog = () => {
 
                             <li>
                                 <div className='flex justify-between items-center cursor-pointer group' onClick={() => toggle('size')}>
-                                    <h1 className='font-bold text-lg'>Size</h1>
+                                    <h1 className='font-bold text-lg'>{t("catalog.size")}</h1>
                                     <HiChevronDown className={`text-2xl transition-transform duration-300 ${openMenus.size ? 'rotate-180' : ''}`} />
                                 </div>
                                 <div className={`overflow-hidden transition-all duration-300 ${openMenus.size ? 'max-h-64 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
@@ -180,7 +175,7 @@ const Catalog = () => {
 
                             <li>
                                 <div className='flex justify-between items-center cursor-pointer group' onClick={() => toggle('collections')}>
-                                    <h1 className='font-bold text-lg'>Collections</h1>
+                                    <h1 className='font-bold text-lg'>{t("catalog.collections")}</h1>
                                     <HiChevronDown className={`text-2xl transition-transform duration-300 ${openMenus.collections ? 'rotate-180' : ''}`} />
                                 </div>
                                 <div className={`overflow-hidden transition-all duration-300 ${openMenus.collections ? 'max-h-60 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
@@ -196,12 +191,12 @@ const Catalog = () => {
 
                             <li>
                                 <div className='flex justify-between items-center cursor-pointer group' onClick={() => toggle('fit')}>
-                                    <h1 className='font-bold text-lg'>Fit</h1>
+                                    <h1 className='font-bold text-lg'>{t("catalog.fit")}</h1>
                                     <HiChevronDown className={`text-2xl transition-transform duration-300 ${openMenus.fit ? 'rotate-180' : ''}`} />
                                 </div>
                                 <div className={`overflow-hidden transition-all duration-300 ${openMenus.fit ? 'max-h-40 mt-4 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className='space-y-3'>
-                                        {["Standard Fit", "Slim Fit", "Loose Fit", "Oversized"].map(f => (
+                                        {(Array.isArray(t("catalog.fitOptions")) ? t("catalog.fitOptions") : []).map(f => (
                                             <div key={f} className='flex items-center gap-3'><input type="checkbox" id={f} className='w-5 h-5 accent-black cursor-pointer' /><label htmlFor={f} className='text-gray-700 cursor-pointer'>{f}</label></div>
                                         ))}
                                     </div>

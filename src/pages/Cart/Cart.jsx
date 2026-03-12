@@ -4,11 +4,13 @@ import useStore from '../../Store/useStore';
 import { AiOutlineDelete, AiOutlineArrowLeft, AiOutlineInfoCircle } from 'react-icons/ai';
 import { HiOutlineShoppingBag } from 'react-icons/hi';
 import CheckoutModal from './CheckoutModal';
+import { useI18n } from '../../i18n/I18nProvider';
 
 const Cart = () => {
     const { cartItems, removeFromCart } = useStore();
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const { t } = useI18n();
 
     const totalPrice = useMemo(() => {
         return cartItems.reduce((acc, item) => {
@@ -25,16 +27,16 @@ const Cart = () => {
                     <HiOutlineShoppingBag size={45} className="text-gray-300" />
                 </div>
                 <h2 className="text-3xl font-black text-gray-900 mb-3 text-center">
-                    Your cart is empty
+                    {t("cart.emptyTitle")}
                 </h2>
                 <p className="text-gray-500 mb-8 text-center max-w-sm leading-relaxed">
-                    You haven't selected anything yet. We recommend checking out our new collection!
+                    {t("cart.emptyDesc")}
                 </p>
                 <Link 
                     to="/catalog" 
                     className="bg-black text-white px-10 py-4 rounded-full font-bold hover:bg-zinc-800 transition-all active:scale-95 shadow-lg"
                 >
-                    Start Shopping
+                    {t("cart.startShopping")}
                 </Link>
             </div>
         );
@@ -45,10 +47,10 @@ const Cart = () => {
 
             <div className="flex items-end gap-3 mb-10 border-b pb-6">
                 <h1 className="text-3xl font-extrabold tracking-tight italic uppercase">
-                    Cart
+                    {t("cart.title")}
                 </h1>
                 <span className="text-gray-400 font-medium pb-1">
-                    ({cartItems.length} items)
+                    ({cartItems.length} {t("cart.items")})
                 </span>
             </div>
 
@@ -84,8 +86,8 @@ const Cart = () => {
                                     </div>
                                     
                                     <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-500">
-                                        <p>Size: <span className="text-black font-semibold uppercase">L (EU 44)</span></p>
-                                        <p>Quantity: <span className="text-black font-semibold">1</span></p>
+                                        <p>{t("cart.size")}: <span className="text-black font-semibold uppercase">L (EU 44)</span></p>
+                                        <p>{t("cart.quantity")}: <span className="text-black font-semibold">1</span></p>
                                     </div>
 
                                     <div className="mt-auto pt-6 flex gap-6">
@@ -95,7 +97,7 @@ const Cart = () => {
                                         >
                                             <AiOutlineDelete size={22} className="group-hover/btn:rotate-12 transition-transform" />
                                             <span className="text-sm font-bold uppercase tracking-tighter">
-                                                Remove
+                                                {t("cart.remove")}
                                             </span>
                                         </button>
                                     </div>
@@ -108,38 +110,38 @@ const Cart = () => {
                         onClick={() => navigate('/catalog')}
                         className="flex items-center gap-2 text-zinc-900 font-bold hover:translate-x-[-5px] transition-transform py-8 text-sm uppercase tracking-widest"
                     >
-                        <AiOutlineArrowLeft /> Back to catalog
+                        <AiOutlineArrowLeft /> {t("cart.backToCatalog")}
                     </button>
                 </div>
 
                 <div className="relative">
                     <div className="sticky top-28 bg-white rounded-3xl p-8 border border-gray-100 shadow-xl shadow-gray-100/50">
                         <h2 className="text-2xl font-black mb-8 italic tracking-tighter uppercase">
-                            Summary
+                            {t("cart.summary")}
                         </h2>
                         
                         <div className="space-y-5 mb-8">
                             <div className="flex justify-between text-gray-600 font-medium">
-                                <span>Subtotal:</span>
+                                <span>{t("cart.subtotal")}:</span>
                                 <span>${totalPrice.toFixed(2)}</span>
                             </div>
 
                             <div className="flex justify-between text-gray-600 font-medium">
                                 <span className="flex items-center gap-1.5">
-                                    Shipping <AiOutlineInfoCircle size={16} className="text-gray-400 cursor-help" />
+                                    {t("cart.shipping")} <AiOutlineInfoCircle size={16} className="text-gray-400 cursor-help" />
                                 </span>
                                 <span className="text-green-600 font-bold uppercase text-sm">
-                                    Free
+                                    {t("cart.free")}
                                 </span>
                             </div>
 
                             <div className="flex justify-between text-gray-600 font-medium border-b pb-5">
-                                <span>Estimated taxes:</span>
+                                <span>{t("cart.taxes")}:</span>
                                 <span>$0.00</span>
                             </div>
 
                             <div className="flex justify-between font-black text-2xl pt-2 tracking-tighter">
-                                <span>TOTAL:</span>
+                                <span>{t("cart.total")}:</span>
                                 <span>${totalPrice.toFixed(2)}</span>
                             </div>
                         </div>
@@ -148,7 +150,7 @@ const Cart = () => {
                             onClick={() => setIsModalOpen(true)}
                             className="w-full bg-black text-white py-5 rounded-full font-black text-lg hover:bg-zinc-800 transition-all active:scale-[0.97] shadow-lg"
                         >
-                            PROCEED TO CHECKOUT
+                            {t("cart.proceed")}
                         </button>
                     </div>
                 </div>

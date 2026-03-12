@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
+import { useI18n } from "../../i18n/I18nProvider";
 
 // Rasmlar importi (Hammasi Katta harf bilan boshlanyapti)
 import Shoes1 from "./images/shoes1.png";
@@ -16,6 +17,7 @@ import Rasm3 from "./images/Oq bolka 3.png";
 import Rasm4 from "./images/Yashil bolka 4.png";
 
 const ProductDetail = () => {
+    const { t } = useI18n();
     // Statelar
     // BU YERDA XATO BOR EDI: shoes1 emas, Shoes1 bo'lishi kerak
     const [mainImage, setMainImage] = useState(Shoes1); 
@@ -54,7 +56,7 @@ const ProductDetail = () => {
             const updatedCart = [...currentCart, product];
             localStorage.setItem("cart", JSON.stringify(updatedCart));
             window.dispatchEvent(new Event("storage"));
-            alert(`Muvaffaqiyatli qo'shildi! Savatda ${updatedCart.length} ta mahsulot bor.`);
+            alert(t("product.addedToCart", { count: updatedCart.length }));
         }
     };
 
@@ -72,16 +74,16 @@ const ProductDetail = () => {
             setUserComment("");
             setRating(0);
         } else if (rating === 0) {
-            alert("Iltimos, yulduzcha tanlang!");
+            alert(t("product.ratingAlert"));
         }
     };
 
     // Pastdagi tavsiya etiladigan mahsulotlar
     const data = [
-        { img: Rasm1, title: "Nike Tech Fleece Windrunner", label: "Just In", price: "$145" },
-        { img: Rasm2, title: "Nike Tech Fleece Windrunner", label: "Sustainable Materials", price: "$145", promo: "Extra 20% Off SPRING" },
-        { img: Rasm3, title: "Nike Dri-FIT Tee", label: "Just In", price: "$145" },
-        { img: Rasm4, title: "Nike Sportswear Tee", label: "Just In", price: "$145" },
+        { img: Rasm1, title: "Nike Tech Fleece Windrunner", labelKey: "trending.justIn", price: "$145" },
+        { img: Rasm2, title: "Nike Tech Fleece Windrunner", labelKey: "product.sustainableMaterials", price: "$145", promoKey: "product.extra20OffSpring" },
+        { img: Rasm3, title: "Nike Dri-FIT Tee", labelKey: "trending.justIn", price: "$145" },
+        { img: Rasm4, title: "Nike Sportswear Tee", labelKey: "trending.justIn", price: "$145" },
     ];
 
     return (
@@ -114,7 +116,7 @@ const ProductDetail = () => {
 
                 {/* RIGHT SIDE: Ma'lumotlar bo'limi */}
                 <section>
-                    <p className="text-sm text-gray-500">140 purchased in the last 7 days</p>
+                    <p className="text-sm text-gray-500">140 {t("product.purchased")}</p>
                     <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold mt-2 italic tracking-tighter uppercase">
                         Air Jordan 1 Low
                     </h1>
@@ -123,11 +125,11 @@ const ProductDetail = () => {
                     <div className="mt-8">
                         <div className="flex justify-between mb-3">
                             <h3 className={`font-bold transition-colors ${error ? "text-red-500 font-black" : ""}`}>
-                                {error ? "Please Select Size" : "Select Size"}
-                            </h3>
-                            <span className="text-gray-500 underline cursor-pointer hover:text-black">
-                                Size Guide
-                            </span>
+                                {error ? t("product.pleaseSelectSize") : t("product.selectSize")}
+                             </h3>
+                             <span className="text-gray-500 underline cursor-pointer hover:text-black">
+                                {t("product.sizeGuide")}
+                             </span>
                         </div>
                         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                             {sizes.map((size) => (
@@ -152,7 +154,7 @@ const ProductDetail = () => {
                             className={`flex-1 py-3 sm:py-4 rounded-full font-bold transition-all duration-300 active:scale-95 shadow-md hover:shadow-xl
                                 ${error ? "bg-red-600 text-white animate-bounce" : "bg-black text-white hover:bg-gray-800"}`}
                         >
-                            {error ? "Choose Size" : "Add to Bag"}
+                            {error ? t("product.chooseSize") : t("common.addToBag")}
                         </button>
                         <button
                             onClick={() => setIsFavorite(!isFavorite)}
@@ -165,8 +167,8 @@ const ProductDetail = () => {
 
                     <div className="mt-10 space-y-6 text-gray-600">
                         <div className="border-t pt-6">
-                            <h3 className="font-bold text-black mb-1">Shipping</h3>
-                            <p>You'll see our shipping options at checkout</p>
+                            <h3 className="font-bold text-black mb-1">{t("product.shipping")}</h3>
+                            <p>{t("product.shippingNote")}</p>
                         </div>
                         <p className="leading-relaxed">
                             Always in, always fresh. The Air Jordan 1 Low sets you up with a piece of Jordan history and heritage that's comfortable all day. It features a premium leather upper for durability and style.
@@ -179,7 +181,7 @@ const ProductDetail = () => {
                             onClick={() => setIsOpen(!isOpen)}
                             className="flex justify-between w-full font-bold text-lg hover:opacity-70"
                         >
-                            Reviews ({localReviews.length})
+                            {t("product.reviews")} ({localReviews.length})
                             <span className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
                         </button>
 
@@ -205,12 +207,12 @@ const ProductDetail = () => {
                                     <div className="flex gap-2">
                                         <input 
                                             type="text" 
-                                            placeholder="Write a review..." 
+                                            placeholder={t("product.writeReview")} 
                                             value={userComment}
                                             onChange={(e) => setUserComment(e.target.value)}
                                             className="flex-1 outline-none text-sm py-1 border-b border-transparent focus:border-black"
                                         />
-                                        <button type="submit" className="text-sm font-bold underline">Post</button>
+                                        <button type="submit" className="text-sm font-bold underline">{t("product.post")}</button>
                                     </div>
                                 </form>
 
@@ -234,14 +236,17 @@ const ProductDetail = () => {
             </div>
 
             <section className="mt-20">
-                <h2 className="text-2xl font-bold mb-8">You Might Also Like</h2>
+                <h2 className="text-2xl font-bold mb-8">{t("product.youMightAlsoLike")}</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                     {data.map((item, index) => (
                         <div key={index} className="group cursor-pointer transition duration-300 hover:-translate-y-2">
                             <div className="bg-gray-100 rounded-2xl overflow-hidden mb-4 shadow-sm group-hover:shadow-xl transition">
                                 <img src={item.img} alt={item.title} className="w-full transition-transform duration-500 group-hover:scale-110" />
                             </div>
-                            <p className="text-orange-700 text-sm font-semibold">{item.label}</p>
+                            <p className="text-orange-700 text-sm font-semibold">{t(item.labelKey)}</p>
+                            {item.promoKey && (
+                                <p className="text-xs text-gray-500 font-medium mt-1">{t(item.promoKey)}</p>
+                            )}
                             <h3 className="font-bold text-gray-900">{item.title}</h3>
                             <p className="font-bold mt-1">{item.price}</p>
                         </div>

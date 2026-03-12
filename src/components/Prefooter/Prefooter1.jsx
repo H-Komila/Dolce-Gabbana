@@ -1,43 +1,39 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import imgprefot1 from '../Prefooter/imgprefot1.png'
-import img2prefot1 from '../Prefooter/img2prefot1.png'
+import imgprefot1 from "../Prefooter/imgprefot1.png";
+import img2prefot1 from "../Prefooter/img2prefot1.png";
+import { useI18n } from "../../i18n/I18nProvider";
 
 const Prefooter1 = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   return (
     <>
       <section className=" py-20">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-
-
           <div>
             <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 leading-tight mb-6">
-              Dresses you’ll turn <br /> to again and again.
+              {t("prefooter.headline")}
             </h1>
 
-            <p className="text-gray-500 max-w-md mb-8">
-              Here is your chance to upgrade your wardrobe with a variation
-              of styles and fits that are both.
-            </p>
+            <p className="text-gray-500 max-w-md mb-8">{t("prefooter.desc")}</p>
 
             <div className="flex items-center gap-6">
               <button
                 onClick={() => navigate("/catalog")}
                 className="bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
               >
-                View Collection
+                {t("common.viewCollection")}
               </button>
 
               <button className="text-gray-700 hover:text-black transition">
-                Add to Bag
+                {t("common.addToBag")}
               </button>
             </div>
           </div>
 
           <div className="relative flex justify-center">
-
             <img
               src={img2prefot1}
               alt="dress"
@@ -49,19 +45,14 @@ const Prefooter1 = () => {
               alt="dress"
               className="w-[350px] h-[500px] shadow-lg absolute right-100 top-35"
             />
-
           </div>
         </div>
       </section>
 
-
-
       <section className=" py-20">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-12">
-
-
           <div>
-            <h3 className="text-lg font-semibold mb-6">Featured</h3>
+            <h3 className="text-lg font-semibold mb-6">{t("prefooter.featured")}</h3>
             <ul className="space-y-3 text-gray-600">
               <li className="hover:text-black cursor-pointer">Sneakers Model 1</li>
               <li className="hover:text-black cursor-pointer">Cotton Mix Coat</li>
@@ -72,9 +63,8 @@ const Prefooter1 = () => {
             </ul>
           </div>
 
-
           <div>
-            <h3 className="text-lg font-semibold mb-6">Shoes</h3>
+            <h3 className="text-lg font-semibold mb-6">{t("prefooter.shoes")}</h3>
             <ul className="space-y-3 text-gray-600">
               <li className="hover:text-black cursor-pointer">All Shoes</li>
               <li className="hover:text-black cursor-pointer">Brutal Max</li>
@@ -86,7 +76,7 @@ const Prefooter1 = () => {
           </div>
 
           <div>
-            <h3 className="text-lg font-semibold mb-6">Clothing</h3>
+            <h3 className="text-lg font-semibold mb-6">{t("prefooter.clothing")}</h3>
             <ul className="space-y-3 text-gray-600">
               <li className="hover:text-black cursor-pointer">All Clothing</li>
               <li className="hover:text-black cursor-pointer">Tops & T-Shirts</li>
@@ -96,7 +86,6 @@ const Prefooter1 = () => {
               <li className="hover:text-black cursor-pointer">Sports Bras</li>
             </ul>
           </div>
-
         </div>
       </section>
     </>
@@ -104,3 +93,4 @@ const Prefooter1 = () => {
 };
 
 export default Prefooter1;
+

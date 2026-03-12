@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Logo from '../components/Nav/images/logo.png';
+import { useI18n } from '../i18n/I18nProvider';
 
 const LoadingScreen = () => {
   const [progress, setProgress] = useState(0);
+  const { t } = useI18n();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -37,7 +39,7 @@ const LoadingScreen = () => {
 
       {/* Foiz ko'rsatkichi */}
       <span className="mt-4 text-[10px] font-medium tracking-[0.2em] text-gray-400 uppercase antialiased">
-        Loading {progress}%
+        {t("common.loading")} {progress}%
       </span>
 
       {/* Pastki tekst (Brend shiori kabi) */}
