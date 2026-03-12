@@ -4,12 +4,15 @@ import Logo from './images/logo.png';
 import { IoSearchSharp, IoMenuOutline, IoCloseOutline, IoLocationOutline } from "react-icons/io5";
 import { FaHeart, FaUserCircle, FaQuestionCircle, FaUserPlus } from "react-icons/fa";
 import { FaBagShopping } from "react-icons/fa6";
+import useStore from '../../Store/useStore'; 
 
 const Nav = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeModal, setActiveModal] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
-    // showMobileSearch holati endi kerak emas, chunki u doim ko'rinib turadi
+    
+    const { cartItems, wishlist } = useStore(); 
+
     const navigate = useNavigate();
 
     const products = ["Nike Air Max", "Jordan Retro", "Nike Pegasus", "Women's Training Shoes", "Men's Running Shorts"];
@@ -20,19 +23,19 @@ const Nav = () => {
     const handleAuthSubmit = (e, type) => {
         e.preventDefault();
         const message = type === 'signin'
-            ? "Tizimga muvaffaqiyatli kirdingiz! ✅"
-            : "Ro'yxatdan o'tganingiz uchun tashakkur! Xush kelibsiz! 🎉";
+            ? "Successfully signed in! ✅"
+            : "Thank you for joining! Welcome! 🎉";
         alert(message);
         setActiveModal(null);
     };
 
     const handleFindStore = () => {
-        alert("Yaqin atrofdagi do'konlar qidirilmoqda... 📍");
+        alert("Searching for nearby stores... 📍");
         setActiveModal(null);
     };
 
     return (
-        <nav className="w-full font-sans relative">
+        <nav className="w-full font-sans fixed left-0 right-0 z-50 bg-white shadow-sm">
             <div className='max-w-[1440px] mx-auto'>
                 {/* 1. TOP BAR */}
                 <div className="bg-[#f5f5f5] py-1.5 px-6 md:px-12 flex justify-end items-center text-[12px] font-medium border-b border-gray-200 hidden md:flex">
@@ -50,21 +53,28 @@ const Nav = () => {
                 {/* 2. MAIN NAV */}
                 <div className="px-6 md:px-12 py-4 flex flex-col md:flex-row justify-between items-center bg-white relative gap-4 md:gap-0">
 
-                    {/* LOGO VA MOBIL ICONS */}
+                    {/* LOGO & MOBILE ICONS */}
                     <div className="flex justify-between items-center w-full md:w-auto">
                         <div className="flex-shrink-0 relative group">
                             <Link to="/" className="block transition-all duration-500 ease-in-out transform hover:scale-105 active:scale-95 outline-none">
                                 <div className="absolute inset-0 bg-black/5 blur-xl rounded-full scale-0 group-hover:scale-150 transition-transform duration-700 opacity-0 group-hover:opacity-100"></div>
-                                <img src={Logo} alt="Nike Logo" className="relative w-16 md:w-[80px] lg:w-[100px] h-auto object-contain" />
+                                <img src={Logo} alt="Nike Logo" className="relative w-20 md:w-[100px] lg:w-[150px] h-auto object-contain" />
                             </Link>
                         </div>
 
-                        {/* Mobil menyu va savatcha (faqat kichik ekranda) */}
+                        {/* Mobile Menu & Cart (Mobile Only) */}
                         <div className="flex md:hidden items-center gap-4 text-2xl">
-                            <Link to="/cart"><FaHeart className="text-xl" /></Link>
-                            <Link to="/product" className="relative">
+                            <Link to="wishlist" className="relative">
+                                <FaHeart className="text-xl" />
+                                {wishlist.length > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{wishlist.length}</span>
+                                )}
+                            </Link>
+                            <Link to="cart" className="relative">
                                 <FaBagShopping className="text-xl" />
-                                <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                                {cartItems.length > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">{cartItems.length}</span>
+                                )}
                             </Link>
                             <button onClick={() => setIsOpen(!isOpen)}>
                                 {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
@@ -82,9 +92,8 @@ const Nav = () => {
                         ))}
                     </ul>
 
-                    {/* SEARCH VA DESKTOP ICONS */}
+                    {/* SEARCH & DESKTOP ICONS */}
                     <div className="flex items-center w-full md:w-auto gap-4">
-                        {/* SEARCH INPUT - Endi mobil va desktopda doim ko'rinadi */}
                         <div className="relative flex-1 md:flex-none">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <IoSearchSharp className="text-xl text-gray-500" />
@@ -100,26 +109,35 @@ const Nav = () => {
                             {/* Search Results Dropdown */}
                             {searchTerm && (
                                 <div className="absolute top-full left-0 md:right-0 w-full md:w-64 bg-white shadow-2xl mt-2 rounded-lg p-4 z-[60] border animate-in fade-in slide-in-from-top-2">
-                                    <p className="text-xs text-gray-400 mb-2 italic text-center">"{searchTerm}" bo'yicha natijalar</p>
+                                    <p className="text-xs text-gray-400 mb-2 italic text-center">Results for "{searchTerm}"</p>
                                     {filteredProducts.length > 0 ? (
                                         filteredProducts.map(p => (
                                             <div key={p} className="py-2 hover:bg-gray-50 cursor-pointer text-sm border-b last:border-none px-2">{p}</div>
                                         ))
                                     ) : (
-                                        <p className="text-sm text-gray-500 text-center py-2">Hech narsa topilmadi 😕</p>
+                                        <p className="text-sm text-gray-500 text-center py-2">No results found 😕</p>
                                     )}
                                 </div>
                             )}
                         </div>
 
-                        {/* DESKTOP ICONS (Faqat md dan yuqori ekranlarda) */}
+                        {/* DESKTOP ICONS */}
                         <div className="hidden md:flex items-center gap-4 text-2xl">
-                            <Link to="/cart" className="relative p-1">
+                            <Link to="wishlist" className="relative p-1">
                                 <FaHeart className="hover:text-red-500 transition-colors" />
+                                {wishlist.length > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                                        {wishlist.length}
+                                    </span>
+                                )}
                             </Link>
-                            <Link to="/product" className="relative p-1">
-                                <FaBagShopping />
-                                <span className="absolute top-0 right-0 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                            <Link to="cart" className="relative p-1">
+                                <FaBagShopping className="hover:text-black transition-colors" />
+                                {cartItems.length > 0 && (
+                                    <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+                                        {cartItems.length}
+                                    </span>
+                                )}
                             </Link>
                         </div>
                     </div>
@@ -132,7 +150,7 @@ const Nav = () => {
                             <button onClick={() => setActiveModal(null)} className="absolute top-4 right-4 text-2xl"><IoCloseOutline /></button>
                             <form onSubmit={(e) => handleAuthSubmit(e, 'signin')} className="flex flex-col items-center">
                                 <FaUserCircle className="text-5xl mb-4 text-gray-700" />
-                                <h2 className="text-xl font-black text-center mb-6">ACCOUNT SIGN IN</h2>
+                                <h2 className="text-xl font-black text-center mb-6 uppercase tracking-tighter">Account Sign In</h2>
                                 <input required type="email" placeholder="Email address" className="w-full border p-3 rounded-md mb-3 outline-black" />
                                 <input required type="password" placeholder="Password" className="w-full border p-3 rounded-md mb-6 outline-black" />
                                 <button type="submit" className="w-full bg-black text-white py-3 rounded-md font-bold hover:bg-gray-800 transition-colors">LOGIN</button>
@@ -146,7 +164,7 @@ const Nav = () => {
                         <div className="bg-white w-full max-w-md rounded-2xl p-8 shadow-2xl relative animate-in zoom-in duration-200 text-center">
                             <button onClick={() => setActiveModal(null)} className="absolute top-4 right-4 text-2xl"><IoCloseOutline /></button>
                             <FaUserPlus className="text-5xl mx-auto mb-4 text-gray-700" />
-                            <h2 className="text-xl font-black mb-4">BECOME A NIKE MEMBER</h2>
+                            <h2 className="text-xl font-black mb-4 uppercase tracking-tighter">Become a Nike Member</h2>
                             <p className="text-gray-500 text-sm mb-6">Create your Nike Member profile and get first access.</p>
                             <form onSubmit={(e) => handleAuthSubmit(e, 'join')} className="space-y-3">
                                 <input required type="text" placeholder="First Name" className="w-full border p-3 rounded-md outline-black" />
@@ -163,8 +181,8 @@ const Nav = () => {
                         <div className="bg-white w-full max-w-sm rounded-2xl p-8 text-center animate-in fade-in duration-300">
                             <IoLocationOutline className="text-6xl mx-auto mb-4 text-red-500 animate-bounce" />
                             <h2 className="text-2xl font-bold mb-2">Find a Nike Store</h2>
-                            <button onClick={handleFindStore} className="w-full bg-black text-white py-3 rounded-full font-bold mt-4">Ruxsat berish</button>
-                            <button onClick={() => setActiveModal(null)} className="text-gray-500 py-2 mt-2">Keyinroq</button>
+                            <button onClick={handleFindStore} className="w-full bg-black text-white py-3 rounded-full font-bold mt-4">Allow Access</button>
+                            <button onClick={() => setActiveModal(null)} className="text-gray-500 py-2 mt-2">Maybe Later</button>
                         </div>
                     </div>
                 )}
@@ -173,9 +191,9 @@ const Nav = () => {
                     <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
                         <div className="bg-white w-full max-w-sm rounded-2xl p-8 relative">
                             <button onClick={() => setActiveModal(null)} className="absolute top-4 right-4 text-2xl"><IoCloseOutline /></button>
-                            <h3 className="text-xl font-bold mb-4 text-center">Yordam</h3>
+                            <h3 className="text-xl font-bold mb-4 text-center">Help</h3>
                             <ul className="space-y-2">
-                                {['Buyurtma holati', 'Yetkazib berish', 'Qaytarish'].map(item => (
+                                {['Order Status', 'Shipping & Delivery', 'Returns'].map(item => (
                                     <li key={item} onClick={() => setActiveModal(null)} className="p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer border">{item}</li>
                                 ))}
                             </ul>

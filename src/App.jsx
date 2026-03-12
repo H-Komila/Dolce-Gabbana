@@ -1,40 +1,35 @@
+// src/App.jsx
 import React, { useState, useEffect } from 'react';
+import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
-
-// Komponentlar
-import LoadingScreen from './components/LoadingScreen';
-
-// Sahifalar
+import Layout from './components/Layout/Layout';
 import Home from './pages/Home/Home';
 import Catalog from './pages/Catalog/Catalog';
+import Cart from './pages/Cart/Cart'; 
+import Wishlist from './pages/Wishlist';
 import ProductDetail from './pages/ProductDetail/ProductDetail';
-import Cart from './pages/Cart/Cart';
-import Layout from './components/Layout/Layout';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000); 
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  if (loading) {
-    return <LoadingScreen />;
-  }
+  if (loading) return <LoadingScreen />;
 
   return (
     <Router>
       <Routes>
-        {/* Hamma sahifalar Layout ichiga olinadi */}
         <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} /> {/* "/" yo'li uchun Home */}
+          <Route index element={<Home />} /> 
           <Route path="catalog" element={<Catalog />} />
-          <Route path="product" element={<ProductDetail />} />
           <Route path="cart" element={<Cart />} />
+          <Route path="wishlist" element={<Wishlist />} />
+          <Route path="product-detail" element={<ProductDetail />} />
+          
         </Route>
       </Routes>
     </Router>
