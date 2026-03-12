@@ -10,10 +10,10 @@ const Prefooter1 = () => {
 
   return (
     <>
-      <section className=" py-20">
+      <section className="py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
           <div>
-            <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold text-gray-900 leading-tight mb-6">
               {t("prefooter.headline")}
             </h1>
 
@@ -33,23 +33,19 @@ const Prefooter1 = () => {
             </div>
           </div>
 
-          <div className="relative flex justify-center">
-            <img
-              src={img2prefot1}
-              alt="dress"
-              className="w-[760px] h-[730px] shadow-lg relative right- top-"
-            />
+          <div className="relative w-full max-w-xl mx-auto pb-10 sm:pb-12">
+            <div className="aspect-[4/5] sm:aspect-[5/4] bg-gray-50 rounded-2xl shadow-lg overflow-hidden">
+              <img src={img2prefot1} alt="dress" className="w-full h-full object-cover" />
+            </div>
 
-            <img
-              src={imgprefot1}
-              alt="dress"
-              className="w-[350px] h-[500px] shadow-lg absolute right-100 top-35"
-            />
+            <div className="absolute right-2 sm:right-4 -bottom-6 sm:-bottom-8 w-40 sm:w-48 md:w-56 aspect-[7/10] bg-white rounded-2xl shadow-xl overflow-hidden">
+              <img src={imgprefot1} alt="dress" className="w-full h-full object-cover" />
+            </div>
           </div>
         </div>
       </section>
 
-      <section className=" py-20">
+      <section className="py-12 md:py-20">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-12">
           <div>
             <h3 className="text-lg font-semibold mb-6">{t("prefooter.featured")}</h3>
@@ -93,4 +89,3 @@ const Prefooter1 = () => {
 };
 
 export default Prefooter1;
-

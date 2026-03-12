@@ -10,7 +10,7 @@ const Footer = () => {
 
   return (
     // bg-white -> bg-black ga o'zgardi, border rangi ham moslashtirildi
-    <footer className="bg-black border-t border-gray-800 pt-16 pb-8 font-sans text-white relative top-30">
+    <footer className="bg-black border-t border-gray-800 pt-12 md:pt-16 pb-8 font-sans text-white">
       <div className="max-w-[1440px] mx-auto px-6 md:px-12">
         
         {/* ASOSIY QISM (GRID) */}

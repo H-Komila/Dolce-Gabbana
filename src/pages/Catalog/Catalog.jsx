@@ -18,7 +18,7 @@ export const ProductCard = ({ product }) => {
     return (
         <div className='group cursor-pointer '>
             <div className='relative bg-gray-100 rounded-sm overflow-hidden'>
-                <img className='w-full object-cover h-[350px] transition-all duration-500' src={currentImg} alt="product" />
+                <img className='w-full object-cover h-[280px] sm:h-[350px] transition-all duration-500' src={currentImg} alt="product" />
                 
                 <div className='absolute top-3 right-3 flex flex-col gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 md:translate-x-2 md:group-hover:translate-x-0'>
                     <button 
@@ -90,11 +90,11 @@ const Catalog = () => {
     };
 
     return (
-        <div className="bg-white min-h-screen relative top-34">
+        <div className="bg-white min-h-screen">
             <div className='container mx-auto px-4 flex flex-col md:flex-row gap-12 pt-12 pb-32'>
                 {/* SIDEBAR */}
                 <div className='w-full md:w-1/4'>
-                    <div className='sticky top-5'>
+                    <div className='md:sticky md:top-24'>
                         <ul className='space-y-7'>
                             <li>
                                 <h1 className='font-bold text-2xl mb-6 text-gray-900'>{t("catalog.newReleases")} ({productsData.length})</h1>

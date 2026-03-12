@@ -46,10 +46,10 @@ const Trending = () => {
         action();
     };
 
-    return (
-        <main className="w-full bg-white pb-32 font-sans">
+        return (
+            <main className="w-full bg-white pb-32 font-sans">
             {/* 1. TRENDING SECTION (Krasofkalar - Endi Cart tugmasi bor) */}
-            <section className="py-12 max-w-[1440px] mx-auto px-6">
+            <section className="py-10 md:py-12 max-w-[1440px] mx-auto px-4 sm:px-6">
                 <h1 className="text-2xl font-bold mb-8 tracking-tight text-gray-900">{t("trending.title")}</h1>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {sections.trending.map(item => (
@@ -84,13 +84,13 @@ const Trending = () => {
             </section>
 
             {/* 2. LIFESTYLE/JACKETS SECTION (Catalogga o'tadi) */}
-            <section className="py-12 max-w-[1440px] mx-auto px-6">
+            <section className="py-10 md:py-12 max-w-[1440px] mx-auto px-4 sm:px-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {sections.jackets.map(item => (
                         <div key={item.id} className="relative group cursor-pointer overflow-hidden rounded-sm" onClick={() => navigate(item.path)}>
-                            <img src={item.img} alt={t(item.titleKey)} className="w-full h-[600px] object-cover transition-transform duration-1000 group-hover:scale-[1.03]" />
+                            <img src={item.img} alt={t(item.titleKey)} className="w-full h-[420px] sm:h-[520px] md:h-[600px] object-cover transition-transform duration-1000 group-hover:scale-[1.03]" />
                             <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
-                            <div className="absolute bottom-10 left-10 text-white">
+                            <div className="absolute bottom-8 left-6 sm:bottom-10 sm:left-10 text-white">
                                 <h2 className="text-2xl font-bold mb-4">{t(item.titleKey)}</h2>
                                     <button className="bg-white text-black px-8 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all active:scale-95 shadow-md">
                                     {t("common.shopNow")}
@@ -108,7 +108,7 @@ const Trending = () => {
             </section>
 
             {/* 3. POPULAR SECTION (Catalogga o'tadi) */}
-            <section className="py-12 max-w-[1440px] mx-auto px-6">
+            <section className="py-10 md:py-12 max-w-[1440px] mx-auto px-4 sm:px-6">
                 <h3 className="text-2xl font-bold mb-8 text-gray-900">{t("trending.popularNow")}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {sections.popular.map(item => (

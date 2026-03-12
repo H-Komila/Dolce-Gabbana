@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './images/logo.png';
 import { IoSearchSharp, IoMenuOutline, IoCloseOutline, IoLocationOutline } from "react-icons/io5";
@@ -9,10 +9,12 @@ import { useI18n } from '../../i18n/I18nProvider';
 import { productsData } from '../../data/products';
 
 const Nav = () => {
+    const navRef = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [activeModal, setActiveModal] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [isSearchOpen, setIsSearchOpen] = useState(false); // Full-screen search holati
+    const [isHidden, setIsHidden] = useState(false);
 
     const { cartItems, wishlist } = useStore();
     const { lang, setLang, t } = useI18n();
@@ -37,6 +39,68 @@ const Nav = () => {
         }
     }, [isSearchOpen]);
 
+    // Header height -> CSS var (Layout uses it as padding-top)
+    useEffect(() => {
+        const el = navRef.current;
+        if (!el) return;
+
+        const update = () => {
+            const h = el.getBoundingClientRect().height;
+            document.documentElement.style.setProperty("--app-header-h", `${Math.ceil(h)}px`);
+        };
+
+        update();
+
+        let ro;
+        if (typeof ResizeObserver !== "undefined") {
+            ro = new ResizeObserver(update);
+            ro.observe(el);
+        } else {
+            window.addEventListener("resize", update);
+        }
+
+        return () => {
+            if (ro) ro.disconnect();
+            else window.removeEventListener("resize", update);
+        };
+    }, []);
+
+    // Hide on scroll down, show on scroll up
+    useEffect(() => {
+        const lastY = { current: window.scrollY || 0 };
+        const raf = { current: 0 };
+
+        const onScroll = () => {
+            if (raf.current) return;
+            raf.current = window.requestAnimationFrame(() => {
+                raf.current = 0;
+                const y = window.scrollY || 0;
+                const delta = y - lastY.current;
+                lastY.current = y;
+
+                const forceShow = isSearchOpen || isOpen || Boolean(activeModal);
+                if (forceShow) {
+                    setIsHidden(false);
+                    return;
+                }
+
+                if (y < 20) {
+                    setIsHidden(false);
+                    return;
+                }
+
+                if (delta > 8) setIsHidden(true);
+                else if (delta < -8) setIsHidden(false);
+            });
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+            if (raf.current) window.cancelAnimationFrame(raf.current);
+        };
+    }, [activeModal, isOpen, isSearchOpen]);
+
     const handleAuthSubmit = (e, type) => {
         e.preventDefault();
         alert(type === 'signin' ? t("toast.signedIn") : t("toast.joined"));
@@ -49,7 +113,10 @@ const Nav = () => {
     };
 
     return (
-        <nav className="w-full font-sans fixed left-0 right-0 z-50 bg-white shadow-sm">
+        <nav
+            ref={navRef}
+            className={`w-full font-sans fixed left-0 right-0 top-0 z-50 bg-white shadow-sm transition-transform duration-300 will-change-transform ${isHidden ? '-translate-y-full' : 'translate-y-0'}`}
+        >
             <div className='max-w-[1440px] mx-auto'>
                 {/* 1. TOP BAR */}
                 <div className="bg-[#f5f5f5] py-1.5 px-6 md:px-12 flex justify-end items-center text-[12px] font-medium border-b border-gray-200 hidden md:flex">
@@ -334,4 +401,3 @@ const Nav = () => {
 };
 
 export default Nav;
-

@@ -47,9 +47,9 @@ function SimpleSlider() {
   return (
     <div className="w-full bg-white">
       <div className="max-w-[1280px] mx-auto">
-        <Slider {...settings}>
-          {slides.map((slide) => (
-            <div key={slide.id} className="relative h-[600px]">
+          <Slider {...settings}>
+            {slides.map((slide) => (
+            <div key={slide.id} className="relative h-[420px] sm:h-[520px] md:h-[600px]">
 
               <img
                 src={slide.img}
@@ -75,7 +75,7 @@ function SimpleSlider() {
               </div>
 
               <div className="absolute inset-0 flex items-center">
-                <div className="max-w-[600px] pl-10 text-white">
+                <div className="max-w-[600px] px-6 sm:pl-10 sm:pr-6 text-white">
 
                   <h1 className="text-4xl md:text-5xl font-bold mb-4">{t(slide.titleKey)}</h1>
 
