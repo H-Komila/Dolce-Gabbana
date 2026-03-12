@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-// Importlarni tekshiring: AiOutline... bular 'ai' papkasidan keladi
+import React from 'react';
 import { AiOutlineHeart, AiFillHeart, AiOutlineShoppingCart } from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import useStore from '../../../Store/useStore';
 
-// Rasmlar (Yo'llar to'g'riligiga ishonch hosil qiling)
+// Rasmlar
 import krasofka from './images/krasofka.png';
 import rsm from './images/rsm.png';
 import rss from './images/rss.png';
@@ -13,123 +14,132 @@ import pp from "./images/pp.png";
 import p1 from './images/p1.svg';
 import ps from "./images/ps.png";
 
-import './Trending.css';
+const Trending = () => {
+    const navigate = useNavigate();
+    const { toggleWishlist, wishlist, addToCart } = useStore();
 
-function Trending() {
-    const [liked, setLiked] = useState({});
+    const checkIsLiked = (id) => wishlist.some(item => item.id === id);
 
-    const handleLike = (id) => {
-        setLiked(prev => ({
-            ...prev,
-            [id]: !prev[id]
-        }));
+    // Ma'lumotlar strukturasi
+    const sections = {
+        trending: [
+            { id: 10, img: krasofka, title: "New from Jordan", category: "Shoes", price: "$150", path: '/product-detail' },
+            { id: 11, img: rsm, title: "New from Jordan", category: "Shoes", price: "$120", path: '/product-detail' },
+            { id: 12, img: rss, title: "New from Jordan", category: "Shoes", price: "$130", path: '/product-detail' },
+        ],
+        jackets: [
+            { id: 13, img: rr, title: "Reversible Denim Jacket", price: "$200", path: '/catalog' },
+            { id: 14, img: ss, title: "Cotton Jacquard Jacket", price: "$180", path: '/catalog' },
+        ],
+        popular: [
+            { id: 15, img: p, title: "Just In", text: "Nike Tech Fleece Windrunner", price: "$145", path: '/catalog' },
+            { id: 16, img: pp, title: "Just In", text: "Nike Sportswear", price: "$145", path: '/catalog' },
+            { id: 17, img: p1, title: "Just In", text: "Nike Air Max", price: "$145", path: '/catalog' },
+            { id: 18, img: ps, title: "Just In", text: "Nike Blazer", price: "$145", path: '/catalog' },
+        ]
     };
 
-    const trendingItems = [
-        { id: 1, img: krasofka, title: "New from Jordan" },
-        { id: 2, img: rsm, title: "New from Jordan" },
-        { id: 3, img: rss, title: "New from Jordan" },
-    ];
-
-    const jacketItems = [
-        { id: 4, img: rr, title: "Reversible Denim Jacket" },
-        { id: 5, img: ss, title: "Cotton Jacquard Jacket" },
-    ];
-
-    const popularItems = [
-        { id: 6, img: p, title: "Just In", text: "Nike Tech Fleece Windrunner", price: "$145" },
-        { id: 7, img: pp, title: "Just In", price: "$145" },
-        { id: 8, img: p1, title: "Just In", price: "$145" },
-        { id: 9, img: ps, title: "Just In", price: "$145" },
-    ];
+    const handleAction = (e, action) => {
+        e.stopPropagation();
+        action();
+    };
 
     return (
-        <main className='trending-wrapper'>
-            {/* 1. Trending Section */}
-            <section className='trending'>
-                <div className='container'>
-                    <h1 className='trending-title-name'>Trending</h1>
-                    <ul className='trending-list'>
-                        {trendingItems.map(item => (
-                            <li key={item.id} className='trending-item'>
-                                <div className="img-wrapper">
-                                    <img src={item.img} alt={item.title} />
-                                </div>
-                                <h2 className='trending-title'>{item.title}</h2>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            </section>
-
-            {/* 2. Jackets Section */}
-            <section className='trd'>
-                <div className='container'>
-                    <ul className='trd-list'>
-                        {jacketItems.map(item => (
-                            <li key={item.id} className='trd-item'>
-                                <div className='trd-img-container'>
-                                    <img src={item.img} alt={item.title} />
+        <main className="w-full bg-white pb-32 font-sans">
+            {/* 1. TRENDING SECTION (Krasofkalar - Endi Cart tugmasi bor) */}
+            <section className="py-12 max-w-[1440px] mx-auto px-6">
+                <h1 className="text-2xl font-bold mb-8 tracking-tight text-gray-900">Trending</h1>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {sections.trending.map(item => (
+                        <div key={item.id} className="group cursor-pointer" onClick={() => navigate(item.path)}>
+                            <div className="relative overflow-hidden bg-[#f5f5f5] rounded-sm">
+                                <img 
+                                    src={item.img} 
+                                    alt={item.title} 
+                                    className="w-full aspect-square object-cover transition-transform duration-700 group-hover:scale-105" 
+                                />
+                                
+                                {/* Hoverda chiqadigan tugmalar */}
+                                <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-black/5">
                                     <button 
-                                        className="like-btn"
-                                        onClick={() => handleLike(item.id)}
+                                        onClick={(e) => handleAction(e, () => toggleWishlist(item))}
+                                        className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100 transition-all hover:scale-110"
                                     >
-                                        {liked[item.id] ? 
-                                            <AiFillHeart size={25} color="red" /> : 
-                                            <AiOutlineHeart size={25} color="black" />
-                                        }
+                                        {checkIsLiked(item.id) ? <AiFillHeart className="text-red-500" size={24} /> : <AiOutlineHeart size={24} />}
+                                    </button>
+                                    <button 
+                                        onClick={(e) => handleAction(e, () => addToCart(item))}
+                                        className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-black hover:text-white transition-all hover:scale-110"
+                                    >
+                                        <AiOutlineShoppingCart size={24} />
                                     </button>
                                 </div>
-                                <div className="trd-info">
-                                    <h2 className='trd-title'>{item.title}</h2>
-                                    <button className="shop-btn">
-                                        <a href="#">Shop Now</a>
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                            </div>
+                            <h3 className="mt-4 text-xl font-semibold text-gray-900 group-hover:underline">{item.title}</h3>
+                        </div>
+                    ))}
                 </div>
             </section>
 
-            {/* 3. Popular Section */}
-            <section className='pop'>
-                <div className='container'>
-                    <div className='pop-container'>
-                        <h3 className='pop-title-name'>Popular right now</h3>
-                        <ul className='pop-list'>
-                            {popularItems.map(item => (
-                                <li key={item.id} className='pop-item'>
-                                    <div className='pop-img-box'>
-                                        <img src={item.img} alt={item.text} />
-                                        <div className='pop-actions'>
-                                            <button 
-                                                className="action-btn"
-                                                onClick={() => handleLike(item.id)}
-                                            >
-                                                {liked[item.id] ? 
-                                                    <AiFillHeart size={20} color="red" /> : 
-                                                    <AiOutlineHeart size={20} />
-                                                }
-                                            </button>
-                                            <button className='action-btn'>
-                                                <AiOutlineShoppingCart size={20} />
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div className='pop-info'>
-                                        <h3 className='pop-title'>{item.title}</h3>
-                                        <p className='pop-text'>{item.text}</p>
-                                        <p className='pop-text-sum'>{item.price}</p>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+            {/* 2. LIFESTYLE/JACKETS SECTION (Catalogga o'tadi) */}
+            <section className="py-12 max-w-[1440px] mx-auto px-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {sections.jackets.map(item => (
+                        <div key={item.id} className="relative group cursor-pointer overflow-hidden rounded-sm" onClick={() => navigate(item.path)}>
+                            <img src={item.img} alt={item.title} className="w-full h-[600px] object-cover transition-transform duration-1000 group-hover:scale-[1.03]" />
+                            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors" />
+                            <div className="absolute bottom-10 left-10 text-white">
+                                <h2 className="text-2xl font-bold mb-4">{item.title}</h2>
+                                <button className="bg-white text-black px-8 py-2.5 rounded-full font-bold hover:bg-gray-200 transition-all active:scale-95 shadow-md">
+                                    Shop Now
+                                </button>
+                            </div>
+                            <button 
+                                onClick={(e) => handleAction(e, () => toggleWishlist(item))}
+                                className="absolute top-6 right-6 p-3 bg-white rounded-full shadow-lg hover:scale-110 transition-transform"
+                            >
+                                {checkIsLiked(item.id) ? <AiFillHeart className="text-red-500" size={26} /> : <AiOutlineHeart size={26} className="text-black" />}
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            {/* 3. POPULAR SECTION (Catalogga o'tadi) */}
+            <section className="py-12 max-w-[1440px] mx-auto px-6">
+                <h3 className="text-2xl font-bold mb-8 text-gray-900">Popular right now</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {sections.popular.map(item => (
+                        <div key={item.id} className="group cursor-pointer" onClick={() => navigate(item.path)}>
+                            <div className="relative aspect-[4/5] bg-[#f6f6f6] overflow-hidden rounded-sm">
+                                <img src={item.img} alt={item.text} className="w-full h-full object-cover mix-blend-multiply transition-transform duration-500 group-hover:scale-105" />
+                                
+                                <div className="absolute inset-x-0 bottom-0 p-4 flex justify-center gap-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out">
+                                    <button 
+                                        onClick={(e) => handleAction(e, () => toggleWishlist(item))}
+                                        className="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-black hover:text-white transition-all"
+                                    >
+                                        {checkIsLiked(item.id) ? <AiFillHeart className="text-red-500" size={20} /> : <AiOutlineHeart size={20} />}
+                                    </button>
+                                    <button 
+                                        onClick={(e) => handleAction(e, () => addToCart(item))}
+                                        className="w-11 h-11 bg-white rounded-full flex items-center justify-center shadow-xl hover:bg-black hover:text-white transition-all"
+                                    >
+                                        <AiOutlineShoppingCart size={20} />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="mt-4 space-y-1">
+                                <h4 className="text-[#9e3500] font-bold text-sm uppercase">{item.title}</h4>
+                                <p className="text-lg font-medium text-black leading-tight group-hover:text-gray-600 transition-colors">{item.text}</p>
+                                <p className="text-lg font-bold text-gray-900">{item.price}</p>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </section>
         </main>
     );
-}
+};
 
 export default Trending;
