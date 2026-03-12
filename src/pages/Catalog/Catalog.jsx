@@ -27,7 +27,7 @@ export const ProductCard = ({ product }) => {
             <div className='relative bg-gray-100 rounded-sm overflow-hidden'>
                 <img className='w-full object-cover h-[350px] transition-all duration-500' src={currentImg} alt="product" />
                 
-                <div className='absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0'>
+                <div className='absolute top-3 right-3 flex flex-col gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 md:translate-x-2 md:group-hover:translate-x-0'>
                     <button 
                         onClick={(e) => { 
                             e.stopPropagation(); 
@@ -71,7 +71,7 @@ export const ProductCard = ({ product }) => {
 
                 <button 
                     onClick={() => addToCart(product)}
-                    className="w-full mt-4 bg-black text-white py-3 rounded-full font-bold text-xs opacity-0 group-hover:opacity-100 transition-all duration-300 active:scale-95"
+                    className="w-full mt-4 bg-black text-white py-3 rounded-full font-bold text-xs opacity-100 md:opacity-0 group-hover:opacity-100 transition-all duration-300 active:scale-95"
                 >
                     ADD TO BAG
                 </button>
@@ -97,7 +97,7 @@ const Catalog = () => {
     return (
         <div className="bg-white min-h-screen relative top-34">
             <div className='container mx-auto px-4 flex flex-col md:flex-row gap-12 pt-12 pb-32'>
-                {/* CHAP TOMON (SIDEBAR) */}
+                {/* SIDEBAR */}
                 <div className='w-full md:w-1/4'>
                     <div className='sticky top-5'>
                         <ul className='space-y-7'>
@@ -211,7 +211,7 @@ const Catalog = () => {
                     </div>
                 </div>
 
-                {/* O'NG TOMON (MAHSULOTLAR GRIDI) */}
+                {/* MAHSULOTLAR GRIDI */}
                 <div className='w-full md:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10'>
                     {productsData.map(product => (
                         <ProductCard 
