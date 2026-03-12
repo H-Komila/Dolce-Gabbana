@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaRegHeart, FaHeart, FaStar } from "react-icons/fa";
 
-// Rasmlar importi
+// Rasmlar importi (Hammasi Katta harf bilan boshlanyapti)
 import Shoes1 from "./images/shoes1.png";
 import Shoes2 from "./images/shoes2.png";
 import Shoes3 from "./images/shoes3.png";
@@ -17,7 +17,8 @@ import Rasm4 from "./images/Yashil bolka 4.png";
 
 const ProductDetail = () => {
     // Statelar
-    const [mainImage, setMainImage] = useState(shoes1);
+    // BU YERDA XATO BOR EDI: shoes1 emas, Shoes1 bo'lishi kerak
+    const [mainImage, setMainImage] = useState(Shoes1); 
     const [selectedSize, setSelectedSize] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
@@ -85,7 +86,6 @@ const ProductDetail = () => {
 
     return (
         <main className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 relative top-34">
-            {/* PRODUCT GRID - items-start rasm qotishi uchun muhim */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
                 
                 {/* LEFT SIDE: Sticky Rasm bo'limi */}
@@ -120,7 +120,6 @@ const ProductDetail = () => {
                     </h1>
                     <p className="text-lg sm:text-xl font-bold mt-4">$145</p>
 
-                    {/* O'lcham tanlash */}
                     <div className="mt-8">
                         <div className="flex justify-between mb-3">
                             <h3 className={`font-bold transition-colors ${error ? "text-red-500 font-black" : ""}`}>
@@ -147,7 +146,6 @@ const ProductDetail = () => {
                         </div>
                     </div>
 
-                    {/* Tugmalar */}
                     <div className="flex gap-4 mt-8">
                         <button
                             onClick={handleAddToBag}
@@ -165,15 +163,10 @@ const ProductDetail = () => {
                         </button>
                     </div>
 
-                    {/* Matnli bo'limlar */}
                     <div className="mt-10 space-y-6 text-gray-600">
                         <div className="border-t pt-6">
                             <h3 className="font-bold text-black mb-1">Shipping</h3>
                             <p>You'll see our shipping options at checkout</p>
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-black mb-1">Free Pickup</h3>
-                            <a href="#" className="underline font-medium text-black hover:opacity-70">Find a Store</a>
                         </div>
                         <p className="leading-relaxed">
                             Always in, always fresh. The Air Jordan 1 Low sets you up with a piece of Jordan history and heritage that's comfortable all day. It features a premium leather upper for durability and style.
@@ -240,7 +233,6 @@ const ProductDetail = () => {
                 </section>
             </div>
 
-            
             <section className="mt-20">
                 <h2 className="text-2xl font-bold mb-8">You Might Also Like</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -251,7 +243,6 @@ const ProductDetail = () => {
                             </div>
                             <p className="text-orange-700 text-sm font-semibold">{item.label}</p>
                             <h3 className="font-bold text-gray-900">{item.title}</h3>
-                            {item.promo && <p className="text-green-700 text-sm">{item.promo}</p>}
                             <p className="font-bold mt-1">{item.price}</p>
                         </div>
                     ))}
