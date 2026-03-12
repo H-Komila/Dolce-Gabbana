@@ -128,3 +128,6 @@ function SimpleSlider() {
 }
 
 export default SimpleSlider;
+
+
+// ======================================================//
